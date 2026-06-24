@@ -1,5 +1,5 @@
 import { IconArrowRight, IconPuzzle, IconStar } from './Icons.jsx'
-import kuuhakusha from '../assets/kuuhakusha.png'
+import kuuhakusha from '../assets/kuuhakusha.webp'
 import { to } from '../routing.js'
 
 // ============================================================
