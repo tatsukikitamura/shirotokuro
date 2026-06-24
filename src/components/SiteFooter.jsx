@@ -22,6 +22,8 @@ export default function SiteFooter() {
           <h4>サービス</h4>
           <a href={to('')}>トップ（物語）</a>
           <a href={to('charge')}>スベテをチャージ</a>
+          <a href={to('history')}>決済履歴</a>
+          <a href={to('login')}>ログイン</a>
           <a href="#support">お問い合わせ</a>
         </div>
 

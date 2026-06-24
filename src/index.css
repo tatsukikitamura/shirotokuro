@@ -168,6 +168,22 @@ a {
   background: var(--ink);
   color: #fff;
 }
+/* ログイン中のヘッダー内リンク（決済履歴など） */
+.header-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted-2);
+  letter-spacing: 0.04em;
+  transition: color 0.14s ease;
+}
+.header-link:hover {
+  color: var(--ink);
+}
+@media (max-width: 560px) {
+  .header-link {
+    display: none;
+  }
+}
 
 /* =================================================================
    ヒーロー
@@ -695,6 +711,17 @@ a {
   line-height: 1.7;
   text-align: center;
 }
+/* 未ログイン時の購入ボタン下の案内 */
+.summary__note--login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+}
 .summary__trust {
   margin-top: 14px;
   display: flex;
@@ -1218,7 +1245,7 @@ a {
 /* ---- ヒーロー ---- */
 .lp-hero {
   position: relative;
-  min-height: min(92vh, 880px);
+  min-height: min(94vh, 900px);
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -1228,7 +1255,7 @@ a {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: 50% 20%;
+  background-position: 50% 14%;
   z-index: 0;
   transform: scale(1.04);
   animation: lp-kenburns 22s ease-in-out infinite alternate;
@@ -1237,27 +1264,40 @@ a {
   from { transform: scale(1.04) translateY(0); }
   to { transform: scale(1.12) translateY(-1.5%); }
 }
+/* シネマティックなロワーサード：本文・ボタンは下部の暗い帯に集約し、
+   キャラクターの顔（上部）はクリアに見せる。白文字の可読性を確保する。 */
 .lp-hero__scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
+    /* 下から立ち上がる強い暗幕（テキスト帯） */
     linear-gradient(
-      180deg,
-      rgba(5, 5, 5, 0.34) 0%,
-      rgba(5, 5, 5, 0) 26%,
-      rgba(5, 5, 5, 0.08) 52%,
-      rgba(5, 5, 5, 0.9) 100%
+      to top,
+      rgba(4, 4, 5, 0.97) 0%,
+      rgba(4, 4, 5, 0.93) 22%,
+      rgba(4, 4, 5, 0.74) 40%,
+      rgba(4, 4, 5, 0.32) 56%,
+      rgba(4, 4, 5, 0) 72%
     ),
-    linear-gradient(90deg, rgba(5, 5, 5, 0.62) 0%, rgba(5, 5, 5, 0) 58%);
+    /* 上端のごく薄いビネット（ヘッダー境界をなじませる） */
+    linear-gradient(to bottom, rgba(4, 4, 5, 0.38) 0%, rgba(4, 4, 5, 0) 16%);
 }
 .lp-hero__inner {
   position: relative;
   z-index: 2;
   width: 100%;
+  max-width: var(--maxw);
   padding-top: 80px;
-  padding-bottom: 84px;
+  padding-bottom: 76px;
   color: #fff;
+}
+/* ヒーロー内のテキストブロックは下部の暗幕に収め、最重要部（顔）を避ける */
+.lp-hero__inner > * {
+  max-width: 620px;
+}
+.lp-hero__inner .lp-cta-row {
+  max-width: none;
 }
 .lp-hero__title {
   margin: 18px 0 0;
@@ -1542,7 +1582,28 @@ a {
     padding: 90px 0;
   }
   .lp-hero {
-    min-height: min(88vh, 720px);
+    min-height: min(90vh, 740px);
+  }
+  /* モバイルは縦長でテキスト量が多いため、顔の焦点（上部）を残しつつ
+     暗幕を少し高くまで効かせ、タイトル〜本文を確実に暗部へ乗せる。 */
+  .lp-hero__bg {
+    background-position: 50% 8%;
+  }
+  .lp-hero__scrim {
+    background:
+      linear-gradient(
+        to top,
+        rgba(4, 4, 5, 0.97) 0%,
+        rgba(4, 4, 5, 0.95) 30%,
+        rgba(4, 4, 5, 0.82) 48%,
+        rgba(4, 4, 5, 0.45) 62%,
+        rgba(4, 4, 5, 0) 78%
+      ),
+      linear-gradient(to bottom, rgba(4, 4, 5, 0.4) 0%, rgba(4, 4, 5, 0) 14%);
+  }
+  /* スクロール誘導は下部ボタンと重なるため非表示 */
+  .lp-scroll {
+    display: none;
   }
 }
 
@@ -1572,5 +1633,505 @@ a {
   }
   .hero__stats {
     gap: 24px;
+  }
+}
+
+/* =================================================================
+   ログイン（/login）  ― 白いカード × 黒い背景（白と黒）
+================================================================= */
+.auth {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 64px 0 80px;
+  background:
+    radial-gradient(100% 90% at 50% 0%, #18181d 0%, #0c0c10 45%, #070709 100%);
+}
+.auth__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pop);
+  padding: 40px 34px 30px;
+  text-align: center;
+}
+.auth-card__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.auth-card__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #1c1c1c, #000);
+}
+.auth-card__mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.auth-card__brand-name {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  padding-left: 0.14em;
+}
+.auth-card__eyebrow {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  color: var(--accent);
+}
+.auth-card__title {
+  margin: 8px 0 0;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  padding-left: 0.1em;
+}
+.auth-card__lead {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--muted-2);
+}
+.auth-card__providers {
+  margin: 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.social-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: transform 0.12s ease, box-shadow 0.14s ease,
+    background 0.14s ease, border-color 0.14s ease;
+}
+.social-btn:active {
+  transform: scale(0.99);
+}
+.social-btn__icon {
+  position: absolute;
+  left: 18px;
+  display: inline-grid;
+  place-items: center;
+}
+.social-btn--google {
+  background: #fff;
+  color: #1f1f1f;
+  border: 1.5px solid var(--line-strong);
+  box-shadow: var(--shadow-soft);
+}
+.social-btn--google:hover {
+  background: #fafafa;
+  border-color: var(--muted);
+}
+.social-btn--line {
+  background: #06c755;
+  color: #fff;
+  border: 1.5px solid #06c755;
+  box-shadow: 0 8px 22px rgba(6, 199, 85, 0.3);
+}
+.social-btn--line:hover {
+  background: #05b34c;
+}
+.social-btn--line .social-btn__icon {
+  color: #fff;
+}
+.auth-card__note {
+  margin: 24px 0 0;
+  font-size: 11.5px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.auth-card__note a {
+  color: var(--accent);
+}
+.auth-card__note a:hover {
+  text-decoration: underline;
+}
+.auth__back a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.66);
+  transition: color 0.14s ease;
+}
+.auth__back a:hover {
+  color: #fff;
+}
+
+/* =================================================================
+   購入結果ポップアップ（成功 / 失敗）  ※ .modal の拡張
+================================================================= */
+.modal--result {
+  padding-top: 30px;
+}
+.result-badge {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  margin: 4px auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff; /* アイコン色 */
+}
+.result-badge svg {
+  position: relative;
+  z-index: 1;
+}
+.result-badge__ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0.3;
+  animation: result-pulse 1.8s ease-out infinite;
+}
+@keyframes result-pulse {
+  0% { transform: scale(0.82); opacity: 0.4; }
+  70% { transform: scale(1.18); opacity: 0; }
+  100% { opacity: 0; }
+}
+.modal--success .result-badge {
+  background: #16a34a;
+  box-shadow: 0 10px 26px rgba(22, 163, 74, 0.35);
+}
+.modal--success .result-badge__ring {
+  border-color: #16a34a;
+}
+.modal--error .result-badge {
+  background: var(--accent);
+  box-shadow: 0 10px 26px rgba(210, 9, 26, 0.32);
+}
+.modal--error .result-badge__ring {
+  border-color: var(--accent);
+}
+.result-sub {
+  margin: 0 0 20px;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--muted-2);
+}
+.result-orderid {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px !important;
+  letter-spacing: 0.02em;
+}
+.result-help {
+  margin: 0 0 20px;
+  text-align: left;
+  background: var(--field);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.result-help p {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.result-help ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.result-help li {
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--muted-2);
+}
+a.modal-confirm {
+  display: block;
+  text-align: center;
+}
+.modal-ghost {
+  margin-top: 10px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted-2);
+  background: transparent;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+.modal-ghost:hover {
+  color: var(--ink);
+  background: var(--field);
+}
+
+/* =================================================================
+   決済履歴（/history）  ※ .legal ページの拡張
+================================================================= */
+.history__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.history__desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--muted-2);
+}
+.history__charge-link {
+  flex: none;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 10px 24px rgba(210, 9, 26, 0.28);
+  transition: background 0.14s ease;
+}
+.history__charge-link:hover {
+  background: var(--accent-dark);
+}
+.history-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 26px 0 30px;
+}
+.history-summary__card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.history-summary__label {
+  font-size: 12px;
+  color: var(--muted-2);
+  font-weight: 600;
+}
+.history-summary__value {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.history-summary__value small {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 0 3px;
+}
+.history-list {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.history-list__head,
+.history-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.3fr 0.8fr 0.7fr;
+  gap: 16px;
+}
+.history-list__head {
+  padding: 14px 24px;
+  background: var(--field);
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted-2);
+  letter-spacing: 0.04em;
+}
+.history-row {
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+}
+.history-row:last-child {
+  border-bottom: none;
+}
+.history-row__main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.history-row__icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, #1d1d1d, #000);
+}
+.history-row__amount {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.history-row__amount strong {
+  font-size: 16px;
+  font-weight: 800;
+}
+.history-row__bonus {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(210, 9, 26, 0.08);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.history-row__id {
+  font-size: 11px;
+  color: var(--muted);
+}
+.history-row__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.history-row__date {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.history-row__method {
+  font-size: 12.5px;
+  color: var(--muted-2);
+}
+.history-row__price {
+  font-size: 17px;
+  font-weight: 900;
+}
+.history-row__price small {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-right: 2px;
+}
+.history-col--price {
+  text-align: right;
+}
+.history-col--status {
+  text-align: right;
+}
+.history-status {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.history-status.is-done {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+}
+.history-status.is-refunded {
+  background: var(--bg-2);
+  color: var(--muted-2);
+}
+.history-status.is-failed {
+  background: rgba(210, 9, 26, 0.1);
+  color: var(--accent);
+}
+.history__note {
+  margin: 18px 0 0;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.history__note a {
+  color: var(--accent);
+}
+.history-empty {
+  text-align: center;
+  background: #fff;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  padding: 56px 24px;
+}
+.history-empty__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1d1d1d, #000);
+}
+.history-empty p {
+  margin: 0 0 18px;
+  color: var(--muted-2);
+  font-size: 14px;
+}
+.history-empty__cta {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+@media (max-width: 820px) {
+  .history-summary {
+    grid-template-columns: 1fr;
+  }
+  .history-list__head {
+    display: none;
+  }
+  .history-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "main status"
+      "meta price";
+    row-gap: 14px;
+  }
+  .history-row__main {
+    grid-area: main;
+  }
+  .history-col--status {
+    grid-area: status;
+  }
+  .history-row__meta {
+    grid-area: meta;
+  }
+  .history-row__price {
+    grid-area: price;
+    align-self: end;
   }
 }

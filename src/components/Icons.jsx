@@ -149,6 +149,37 @@ export function IconSupport({ size = 28 }) {
   )
 }
 
+// 感嘆符（エラー・警告）
+export function IconAlert({ size = 30 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth={2.2} aria-hidden="true">
+      <path d="M12 7.5v6" />
+      <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+      <path d="M12 17h0" strokeWidth={2.6} />
+    </svg>
+  )
+}
+
+// 時計（履歴・最近の取引）
+export function IconClock({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  )
+}
+
+// レシート（決済履歴）
+export function IconReceipt({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" {...base} aria-hidden="true">
+      <path d="M12 5h24v38l-4-3-4 3-4-3-4 3-4-3-4 3z" />
+      <path d="M18 16h12M18 23h12M18 30h8" />
+    </svg>
+  )
+}
+
 // 鍵（SSL / 安全）
 export function IconLock({ size = 14 }) {
   return (

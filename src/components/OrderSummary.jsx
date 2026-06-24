@@ -5,10 +5,12 @@ import { METHODS } from './PaymentMethods.jsx'
 const num = (n) => n.toLocaleString('ja-JP')
 
 // 注文サマリー（右カラム・購入ボタン）
-export default function OrderSummary({ currencyLabel, product, paymentId, onCheckout }) {
+export default function OrderSummary({ currencyLabel, product, paymentId, authed, onCheckout }) {
   const bonus = product ? bonusOf(product) : 0
   const paymentLabel = METHODS.find((m) => m.id === paymentId)?.label ?? '未選択'
   const ready = Boolean(product && paymentId)
+  // ボタン表記：未選択 → 金額選択を促す / 未ログイン → ログインへ誘導 / それ以外 → 購入手続き
+  const payLabel = !ready ? 'チャージ金額を選択' : authed ? '購入手続きへ進む' : 'ログインして購入'
 
   return (
     <aside className="summary" aria-label="注文内容">
@@ -45,8 +47,14 @@ export default function OrderSummary({ currencyLabel, product, paymentId, onChec
           disabled={!ready}
           onClick={() => ready && onCheckout()}
         >
-          {ready ? '購入手続きへ進む' : 'チャージ金額を選択'}
+          {payLabel}
         </button>
+
+        {ready && !authed && (
+          <p className="summary__note summary__note--login">
+            <IconLock /> ご購入にはログインが必要です
+          </p>
+        )}
 
         <p className="summary__note">
           ※ お支払い完了後、アカウントへ自動でスベテが付与されます。

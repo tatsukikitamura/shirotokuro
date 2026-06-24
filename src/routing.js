@@ -10,6 +10,14 @@ export function to(route = '') {
   return BASE + route
 }
 
+// プログラムによるページ遷移（リロードなし）。
+// App 側の popstate ハンドラが拾ってルートを更新する。
+//   navigate('login?redirect=charge') -> /shirotokuro/login?redirect=charge
+export function navigate(route = '') {
+  window.history.pushState(null, '', BASE + route)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 // 現在の location.pathname からルート名を取り出す。
 //   '/shirotokuro/'        -> ''
 //   '/shirotokuro/charge'  -> 'charge'

@@ -3,6 +3,8 @@ import SiteHeader from './components/SiteHeader.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 import Landing from './components/Landing.jsx'
 import Home from './components/Home.jsx'
+import LoginPage from './components/LoginPage.jsx'
+import HistoryPage from './components/HistoryPage.jsx'
 import LegalPage from './components/LegalPage.jsx'
 import Tokushoho from './components/Tokushoho.jsx'
 import { TERMS, CHARGE_TERMS, PRIVACY } from './data/legal.js'
@@ -87,6 +89,12 @@ export default function App() {
   switch (route) {
     case 'charge':
       content = <Home />
+      break
+    case 'login':
+      content = <LoginPage />
+      break
+    case 'history':
+      content = <HistoryPage />
       break
     case 'terms':
       content = <LegalPage doc={TERMS} />

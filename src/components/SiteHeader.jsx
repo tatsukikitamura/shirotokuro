@@ -1,8 +1,16 @@
 import subeteCard from '../assets/subete-card.png'
-import { to } from '../routing.js'
+import { to, navigate } from '../routing.js'
+import { isLoggedIn, logout } from '../auth.js'
 
 // 横幅フルのトップナビ
 export default function SiteHeader() {
+  const authed = isLoggedIn()
+
+  const onLogout = () => {
+    logout()
+    navigate('')
+  }
+
   return (
     <header className="site-header">
       <div className="wrap site-header__inner">
@@ -15,7 +23,14 @@ export default function SiteHeader() {
 
         <div className="site-header__right">
           <span className="lang-pill">日本語</span>
-          <button className="btn-ghost">ログイン</button>
+          {authed ? (
+            <>
+              <a className="header-link" href={to('history')}>決済履歴</a>
+              <button className="btn-ghost" onClick={onLogout}>ログアウト</button>
+            </>
+          ) : (
+            <a className="btn-ghost" href={to('login')}>ログイン</a>
+          )}
         </div>
       </div>
     </header>
