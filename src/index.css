@@ -1120,6 +1120,432 @@ a {
   }
 }
 
+/* =================================================================
+   LP（トップ／物語）  ― 白と黒の世界観
+================================================================= */
+.lp-narrow {
+  max-width: 760px;
+}
+.lp-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 共通：小見出し / 本文 / 大見出し */
+.lp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  color: rgba(255, 255, 255, 0.82);
+}
+.lp-kicker {
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+  color: rgba(255, 255, 255, 0.5);
+}
+.lp-kicker--ink {
+  color: var(--accent);
+}
+.lp-h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(26px, 3.6vw, 40px);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.lp-body {
+  font-size: 15.5px;
+  line-height: 2.1;
+  color: rgba(255, 255, 255, 0.74);
+}
+.lp-body--ink {
+  color: var(--ink-soft);
+}
+.lp-accent {
+  color: var(--accent);
+}
+
+/* ボタン */
+.lp-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
+}
+.lp-cta-row--center {
+  justify-content: center;
+}
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  transition: transform 0.14s ease, box-shadow 0.14s ease,
+    background 0.14s ease, color 0.14s ease;
+}
+.lp-btn--light {
+  background: #fff;
+  color: #0a0a0a;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+.lp-btn--light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+.lp-btn--outline {
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+.lp-btn--outline:hover {
+  background: #fff;
+  color: #0a0a0a;
+}
+
+/* ---- ヒーロー ---- */
+.lp-hero {
+  position: relative;
+  min-height: min(92vh, 880px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #050505;
+}
+.lp-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 20%;
+  z-index: 0;
+  transform: scale(1.04);
+  animation: lp-kenburns 22s ease-in-out infinite alternate;
+}
+@keyframes lp-kenburns {
+  from { transform: scale(1.04) translateY(0); }
+  to { transform: scale(1.12) translateY(-1.5%); }
+}
+.lp-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 5, 5, 0.34) 0%,
+      rgba(5, 5, 5, 0) 26%,
+      rgba(5, 5, 5, 0.08) 52%,
+      rgba(5, 5, 5, 0.9) 100%
+    ),
+    linear-gradient(90deg, rgba(5, 5, 5, 0.62) 0%, rgba(5, 5, 5, 0) 58%);
+}
+.lp-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-top: 80px;
+  padding-bottom: 84px;
+  color: #fff;
+}
+.lp-hero__title {
+  margin: 18px 0 0;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(52px, 9vw, 104px);
+  line-height: 1;
+  letter-spacing: 0.16em;
+  padding-left: 0.16em;
+  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+.lp-hero__tagline {
+  margin: 22px 0 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(18px, 2.6vw, 26px);
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+.lp-hero__lead {
+  margin: 16px 0 0;
+  max-width: 540px;
+  font-size: 15px;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* スクロール誘導 */
+.lp-scroll {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 44px;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  display: grid;
+  place-items: start center;
+  padding-top: 8px;
+}
+.lp-scroll__line {
+  width: 3px;
+  height: 9px;
+  border-radius: 999px;
+  background: #fff;
+  animation: lp-scroll 1.6s ease-in-out infinite;
+}
+@keyframes lp-scroll {
+  0% { opacity: 0; transform: translateY(0); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(14px); }
+}
+
+/* ---- 世界観の導入（黒） ---- */
+.lp-world {
+  background:
+    radial-gradient(120% 120% at 50% 0%, #1a1a1a 0%, #0b0b0b 55%, #050505 100%);
+  color: #fff;
+  padding: 96px 0;
+  text-align: center;
+}
+.lp-world .lp-kicker {
+  margin-bottom: 26px;
+}
+.lp-lede {
+  margin: 0 0 26px;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 3.4vw, 34px);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+}
+.lp-lede em {
+  font-style: normal;
+  color: #ff5564;
+}
+.lp-world .lp-body {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ---- 空白者（白） ---- */
+.lp-concept {
+  background: var(--paper);
+  padding: 96px 0;
+}
+.lp-concept__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+}
+.lp-concept__media {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-pop);
+  background: #050505;
+}
+.lp-concept__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.lp-concept__rating {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  display: flex;
+  gap: 4px;
+  color: #fff;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+.lp-concept__text .lp-body {
+  margin: 16px 0 0;
+}
+.lp-concept__text strong {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+/* ---- 救済者＝あなた（黒・ドラマチック） ---- */
+.lp-savior {
+  position: relative;
+  background:
+    radial-gradient(70% 120% at 50% 50%, rgba(210, 9, 26, 0.16), transparent 70%),
+    #070707;
+  color: #fff;
+  padding: 110px 0;
+}
+.lp-savior .lp-eyebrow {
+  color: rgba(255, 255, 255, 0.55);
+  justify-content: center;
+  display: flex;
+}
+.lp-savior__title {
+  margin: 18px 0 22px;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+}
+.lp-savior .lp-body {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ---- 遊び方（白） ---- */
+.lp-loop {
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 96px 0;
+}
+.lp-section-head {
+  margin-bottom: 52px;
+}
+.lp-loop__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #1d1d1d, #000);
+  color: #fff;
+}
+.lp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  counter-reset: step;
+}
+.lp-step {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 34px 26px 30px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+.lp-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+.lp-step__no {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+.lp-step__title {
+  margin: 12px 0 10px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.lp-step__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--muted-2);
+}
+
+/* ---- クロージング CTA（黒・画像） ---- */
+.lp-cta {
+  position: relative;
+  overflow: hidden;
+  background: #050505;
+  padding: 120px 0;
+  color: #fff;
+}
+.lp-cta__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: 50% 28%;
+  opacity: 0.5;
+}
+.lp-cta__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(80% 90% at 50% 50%, rgba(5, 5, 5, 0.55), rgba(5, 5, 5, 0.92));
+}
+.lp-cta__inner {
+  position: relative;
+  z-index: 2;
+}
+.lp-cta__title {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(24px, 3.6vw, 40px);
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+}
+.lp-cta__sub {
+  margin: 0 auto;
+  max-width: 540px;
+  font-size: 14px;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+@media (max-width: 900px) {
+  .lp-concept__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .lp-concept__media {
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .lp-steps {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .lp-world,
+  .lp-concept,
+  .lp-savior,
+  .lp-loop {
+    padding: 72px 0;
+  }
+  .lp-cta {
+    padding: 90px 0;
+  }
+  .lp-hero {
+    min-height: min(88vh, 720px);
+  }
+}
+
 @media (max-width: 460px) {
   .wrap {
     padding: 0 16px;

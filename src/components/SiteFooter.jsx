@@ -19,9 +19,8 @@ export default function SiteFooter() {
 
         <div className="footer-col">
           <h4>サービス</h4>
-          <a href="#charge">スベテをチャージ</a>
-          <a href="#features">安心ポイント</a>
-          <a href="#faq">よくある質問</a>
+          <a href="#/">トップ（物語）</a>
+          <a href="#/charge">スベテをチャージ</a>
           <a href="#support">お問い合わせ</a>
         </div>
 

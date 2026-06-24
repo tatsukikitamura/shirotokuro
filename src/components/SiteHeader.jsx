@@ -5,7 +5,7 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <div className="wrap site-header__inner">
-        <a className="brand" href="#top">
+        <a className="brand" href="#/">
           <span className="brand__mark">
             <img src={subeteCard} alt="" />
           </span>
