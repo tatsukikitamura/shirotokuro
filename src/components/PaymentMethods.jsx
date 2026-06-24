@@ -1,9 +1,16 @@
+import { PiCreditCard, PiStore, PiMobile, PiQr, PiBank } from './PaymentIcons.jsx'
+
 // 「ご利用可能な決済方法」バナー + 決済手段グリッド
-// label を入れれば各セルにブランド名/ロゴが入る。空文字はプレースホルダー表示。
 const METHODS = [
-  'クレジットカード', 'コンビニ決済', 'キャリア決済',
-  'PayPay', 'd払い', 'au PAY',
-  '楽天ペイ', 'メルペイ', '銀行振込',
+  { label: 'クレジットカード', Icon: PiCreditCard },
+  { label: 'コンビニ決済', Icon: PiStore },
+  { label: 'キャリア決済', Icon: PiMobile },
+  { label: 'PayPay', Icon: PiQr },
+  { label: 'd払い', Icon: PiQr },
+  { label: 'au PAY', Icon: PiQr },
+  { label: '楽天ペイ', Icon: PiQr },
+  { label: 'メルペイ', Icon: PiQr },
+  { label: '銀行振込', Icon: PiBank },
 ]
 
 export default function PaymentMethods() {
@@ -11,9 +18,12 @@ export default function PaymentMethods() {
     <section className="payments">
       <div className="payments-banner">ご利用可能な決済方法</div>
       <div className="payments-grid">
-        {METHODS.map((m) => (
-          <div className="payment-cell" key={m}>
-            <span className="payment-cell-label">{m}</span>
+        {METHODS.map(({ label, Icon }) => (
+          <div className="payment-cell" key={label}>
+            <span className="payment-cell-icon" aria-hidden="true">
+              <Icon />
+            </span>
+            <span className="payment-cell-label">{label}</span>
           </div>
         ))}
       </div>
