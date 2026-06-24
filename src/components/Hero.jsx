@@ -21,21 +21,6 @@ export default function Hero() {
             お支払い後すぐにアカウントへ反映されます。
           </p>
 
-          <div className="hero__stats">
-            <div>
-              <div className="hero__stat-num">最大19%</div>
-              <div className="hero__stat-label">ボーナス還元</div>
-            </div>
-            <div>
-              <div className="hero__stat-num">即時</div>
-              <div className="hero__stat-label">アカウント反映</div>
-            </div>
-            <div>
-              <div className="hero__stat-num">4ブランド</div>
-              <div className="hero__stat-label">主要カード対応</div>
-            </div>
-          </div>
-
           <a className="hero__cta" href="#charge">
             今すぐチャージする
             <IconArrowRight />
