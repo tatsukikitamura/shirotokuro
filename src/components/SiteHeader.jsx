@@ -12,13 +12,6 @@ export default function SiteHeader() {
           <span className="brand__name">白と黒</span>
         </a>
 
-        <nav className="site-nav" aria-label="メインメニュー">
-          <a href="#charge">チャージ</a>
-          <a href="#features">安心ポイント</a>
-          <a href="#faq">よくある質問</a>
-          <a href="#support">サポート</a>
-        </nav>
-
         <div className="site-header__right">
           <span className="lang-pill">日本語</span>
           <button className="btn-ghost">ログイン</button>
