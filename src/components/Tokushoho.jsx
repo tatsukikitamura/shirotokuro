@@ -1,4 +1,5 @@
 import { LEGAL_UPDATED, TOKUSHOHO } from '../data/legal.js'
+import { to } from '../routing.js'
 
 // 特定商取引法に基づく表記（key-value テーブル）
 export default function Tokushoho() {
@@ -6,7 +7,7 @@ export default function Tokushoho() {
     <main className="legal">
       <div className="wrap legal__inner">
         <nav className="legal__breadcrumb" aria-label="パンくず">
-          <a href="#/">ホーム</a> ／ <span>{TOKUSHOHO.title}</span>
+          <a href={to('')}>ホーム</a> ／ <span>{TOKUSHOHO.title}</span>
         </nav>
 
         <h1 className="legal__title">{TOKUSHOHO.title}</h1>

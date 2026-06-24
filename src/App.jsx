@@ -6,40 +6,77 @@ import Home from './components/Home.jsx'
 import LegalPage from './components/LegalPage.jsx'
 import Tokushoho from './components/Tokushoho.jsx'
 import { TERMS, CHARGE_TERMS, PRIVACY } from './data/legal.js'
+import { BASE, currentRoute } from './routing.js'
 
-// ハッシュルーティング（GitHub Pages でもそのまま動く）。
-//   「#」「#/」… ホーム（LP）。
-//   「#/charge」「#/terms」… 先頭が「/」のものはページ遷移。
-//   「#story」「#charge」… それ以外は “いま表示中のページ内のアンカー” として扱い、
-//   ページは切り替えず、ブラウザのスムーズスクロールに任せる（null を返す）。
-function pageRouteFromHash(hash) {
-  const path = hash.replace(/^#/, '')
-  if (path === '' || path === '/') return '' // ホーム（LP）
-  return path.startsWith('/') ? path.slice(1) : null
-}
-
+// パス形式のルーティング（/charge, /terms …）。
+//   ・ページ遷移は History API（pushState）でリロードなしに行う。
+//   ・「#story」「#charge」のような純粋なページ内アンカーはブラウザに任せる。
+//   ・GitHub Pages では public/404.html → index.html の復元スクリプトで
+//     ディープリンク（直接アクセス／リロード）にも対応する。
 export default function App() {
-  const [route, setRoute] = useState(
-    () => pageRouteFromHash(window.location.hash) ?? '',
-  )
+  const [route, setRoute] = useState(() => currentRoute())
   const prevRouteRef = useRef(route)
 
   useEffect(() => {
-    // ページ遷移時のスクロール位置は自前で制御する（ブラウザの自動復元を無効化）。
+    // 戻る/進む・ページ遷移のスクロールは自前で制御する。
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
-    const onHash = () => {
-      const next = pageRouteFromHash(window.location.hash)
-      // ページ内アンカー（next === null）のときは route を変えない。
-      if (next !== null) setRoute(next)
+
+    const onPop = () => setRoute(currentRoute())
+    window.addEventListener('popstate', onPop)
+
+    // 内部リンクのクリックを横取りして History 遷移に変換する。
+    const onClick = (e) => {
+      if (e.defaultPrevented || e.button !== 0) return
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const a = e.target.closest('a')
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return
+
+      const raw = a.getAttribute('href')
+      if (!raw) return
+
+      // ページ内アンカー（#story 等）は、スティッキーヘッダー分(84px)を
+      // 考慮して自前でスムーズスクロールする（ブラウザ任せだと不安定なため）。
+      if (raw.startsWith('#')) {
+        const id = decodeURIComponent(raw.slice(1))
+        const el = id && document.getElementById(id)
+        if (el) {
+          e.preventDefault()
+          const y = el.getBoundingClientRect().top + window.scrollY - 84
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
+          window.history.replaceState(
+            null,
+            '',
+            window.location.pathname + window.location.search + raw,
+          )
+        }
+        return
+      }
+
+      const url = new URL(a.href)
+      if (url.origin !== window.location.origin) return // 外部リンク
+      if (!url.pathname.startsWith(BASE)) return // サイト外
+
+      e.preventDefault()
+      if (url.pathname !== window.location.pathname) {
+        window.history.pushState(null, '', url.pathname + url.search + url.hash)
+        setRoute(currentRoute())
+      } else if (url.hash) {
+        // 同一ページ内のアンカー指定
+        window.location.hash = url.hash
+      }
     }
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    document.addEventListener('click', onClick)
+
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      document.removeEventListener('click', onClick)
+    }
   }, [])
 
-  // 表示するページが切り替わった直後だけ、描画前に確実に最上部へスクロールする
-  // （瞬間移動）。同一ページ内のアンカー移動はブラウザのスムーズスクロールに任せる。
+  // 表示するページが切り替わった直後だけ、描画前に確実に最上部へスクロールする。
+  // 同一ページ内のアンカー移動はブラウザのスムーズスクロールに任せる。
   useLayoutEffect(() => {
     if (prevRouteRef.current === route) return
     prevRouteRef.current = route

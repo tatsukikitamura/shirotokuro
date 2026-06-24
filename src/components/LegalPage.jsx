@@ -1,4 +1,5 @@
 import { LEGAL_UPDATED } from '../data/legal.js'
+import { to } from '../routing.js'
 
 // 利用規約 / チャージ規約 / プライバシーポリシー 共通の表示
 export default function LegalPage({ doc }) {
@@ -6,7 +7,7 @@ export default function LegalPage({ doc }) {
     <main className="legal">
       <div className="wrap legal__inner">
         <nav className="legal__breadcrumb" aria-label="パンくず">
-          <a href="#/">ホーム</a> ／ <span>{doc.title}</span>
+          <a href={to('')}>ホーム</a> ／ <span>{doc.title}</span>
         </nav>
 
         <h1 className="legal__title">{doc.title}</h1>

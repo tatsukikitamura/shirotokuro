@@ -1,5 +1,6 @@
 import { IconArrowRight, IconPuzzle, IconStar } from './Icons.jsx'
 import kuuhakusha from '../assets/kuuhakusha.png'
+import { to } from '../routing.js'
 
 // ============================================================
 // 「白と黒」LP（トップページ）
@@ -50,7 +51,7 @@ export default function Landing() {
               物語を知る
               <IconArrowRight />
             </a>
-            <a className="lp-btn lp-btn--outline" href="#/charge">
+            <a className="lp-btn lp-btn--outline" href={to('charge')}>
               スベテをチャージ
             </a>
           </div>
@@ -165,7 +166,7 @@ export default function Landing() {
             救済の旅に必要なゲーム内通貨「スベテ」は、公式ストアでかんたんにチャージできます。
           </p>
           <div className="lp-cta-row lp-cta-row--center">
-            <a className="lp-btn lp-btn--light" href="#/charge">
+            <a className="lp-btn lp-btn--light" href={to('charge')}>
               スベテをチャージ
               <IconArrowRight />
             </a>
