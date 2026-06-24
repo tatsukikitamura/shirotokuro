@@ -99,3 +99,62 @@ export function IconStar({ size = 30 }) {
     </svg>
   )
 }
+
+// チェック（選択中）
+export function IconCheck({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth={2.6} aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 7" />
+    </svg>
+  )
+}
+
+// 右矢印（CTA）
+export function IconArrowRight({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth={2.2} aria-hidden="true">
+      <path d="M5 12h13M12 5l7 7-7 7" />
+    </svg>
+  )
+}
+
+// 稲妻（即時付与）
+export function IconBolt({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" {...base} aria-hidden="true">
+      <path d="M27 5 12 27h10l-2 16 16-23H26z" />
+    </svg>
+  )
+}
+
+// 盾＋鍵（安全な決済）
+export function IconShield({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" {...base} aria-hidden="true">
+      <path d="M24 5 9 11v9c0 11 6.5 18 15 23 8.5-5 15-12 15-23v-9z" />
+      <path d="M18 24l4.5 4.5L31 20" />
+    </svg>
+  )
+}
+
+// ヘッドセット（サポート）
+export function IconSupport({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" {...base} aria-hidden="true">
+      <path d="M10 26v-3a14 14 0 0 1 28 0v3" />
+      <rect x="7" y="26" width="7" height="11" rx="2.5" />
+      <rect x="34" y="26" width="7" height="11" rx="2.5" />
+      <path d="M38 37v1a5 5 0 0 1-5 5h-5" />
+    </svg>
+  )
+}
+
+// 鍵（SSL / 安全）
+export function IconLock({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true">
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </svg>
+  )
+}

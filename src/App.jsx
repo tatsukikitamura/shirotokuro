@@ -1,64 +1,71 @@
-import { useMemo, useState } from 'react'
-import Header from './components/Header.jsx'
-import ItemShowcase from './components/ItemShowcase.jsx'
-import PaymentMethods from './components/PaymentMethods.jsx'
-import TabSelector from './components/TabSelector.jsx'
-import ProductList from './components/ProductList.jsx'
-import BottomNav from './components/BottomNav.jsx'
-import PurchaseModal from './components/PurchaseModal.jsx'
-import { CURRENCIES, PRODUCTS_BY_CURRENCY } from './data/products.js'
+import { useState, useEffect, useRef } from 'react'
+import SiteHeader from './components/SiteHeader.jsx'
+import SiteFooter from './components/SiteFooter.jsx'
+import Home from './components/Home.jsx'
+import LegalPage from './components/LegalPage.jsx'
+import Tokushoho from './components/Tokushoho.jsx'
+import { TERMS, CHARGE_TERMS, PRIVACY } from './data/legal.js'
+
+// ハッシュルーティング（GitHub Pages でもそのまま動く）。
+// 「#/terms」のように先頭が「/」のものをページ遷移、それ以外（#charge 等）は
+// ホーム内のアンカーとして扱う。
+function routeFromHash(hash) {
+  const path = hash.replace(/^#/, '')
+  return path.startsWith('/') ? path.slice(1) : ''
+}
 
 export default function App() {
-  const [activeCurrency, setActiveCurrency] = useState('subete')
-  const [selected, setSelected] = useState(null)
+  const [hash, setHash] = useState(window.location.hash || '')
 
-  const currency = useMemo(
-    () => CURRENCIES.find((c) => c.id === activeCurrency),
-    [activeCurrency],
-  )
-  const products = PRODUCTS_BY_CURRENCY[activeCurrency] ?? []
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash || '')
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
-  const handleConfirm = (product) => {
-    // TODO: ここで決済プロバイダ（Stripe / PAY.JP / KOMOJU 等）の
-    // チェックアウトセッションを作成してリダイレクトする。
-    // 例: window.location.href = await createCheckout(product.id)
-    alert(
-      `「${currency.label} ${product.amount.toLocaleString('ja-JP')} point」\n` +
-      `JPY ${product.price.toLocaleString('ja-JP')} の決済へ進みます。\n\n` +
-      `（ここに決済プロバイダのチェックアウトを接続してください）`,
-    )
-    setSelected(null)
+  const route = routeFromHash(hash)
+  const prevRouteRef = useRef(route)
+
+  // 表示するページが切り替わった直後だけ、JS で確実にスクロールする
+  // （瞬間移動。新しいビューの描画を待つため 1 フレーム遅らせる）。
+  // 同一ページ内のアンカー移動はブラウザのスムーズスクロールに任せる。
+  useEffect(() => {
+    const viewChanged = prevRouteRef.current !== route
+    prevRouteRef.current = route
+    if (!viewChanged) return
+
+    const anchor = !route && hash && !hash.startsWith('#/') ? hash.slice(1) : ''
+    const raf = requestAnimationFrame(() => {
+      const el = anchor && document.getElementById(anchor)
+      if (el) el.scrollIntoView({ behavior: 'instant' })
+      else window.scrollTo({ top: 0, behavior: 'instant' })
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [hash, route])
+
+  let content
+  switch (route) {
+    case 'terms':
+      content = <LegalPage doc={TERMS} />
+      break
+    case 'charge-terms':
+      content = <LegalPage doc={CHARGE_TERMS} />
+      break
+    case 'privacy':
+      content = <LegalPage doc={PRIVACY} />
+      break
+    case 'tokushoho':
+      content = <Tokushoho />
+      break
+    default:
+      content = <Home />
   }
 
   return (
-    <div className="phone">
-      <div className="screen">
-        <Header />
-
-        <main className="content">
-          <ItemShowcase />
-          <PaymentMethods />
-
-          <TabSelector active={activeCurrency} onChange={setActiveCurrency} />
-
-          <p className="currency-desc">{currency.desc}</p>
-
-          <ProductList
-            products={products}
-            currencyLabel={currency.label}
-            onPurchase={setSelected}
-          />
-        </main>
-
-        <BottomNav />
-      </div>
-
-      <PurchaseModal
-        product={selected}
-        currencyLabel={currency.label}
-        onClose={() => setSelected(null)}
-        onConfirm={handleConfirm}
-      />
+    <div className="page">
+      <SiteHeader />
+      {content}
+      <SiteFooter />
     </div>
   )
 }

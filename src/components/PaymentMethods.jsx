@@ -1,32 +1,31 @@
-import { PiCreditCard, PiStore, PiMobile, PiQr, PiBank } from './PaymentIcons.jsx'
+import { PiCreditCard } from './PaymentIcons.jsx'
+import { IconCheck } from './Icons.jsx'
+import { CARD_BRANDS } from './CardBrands.jsx'
 
-// 「ご利用可能な決済方法」バナー + 決済手段グリッド
-const METHODS = [
-  { label: 'クレジットカード', Icon: PiCreditCard },
-  { label: 'コンビニ決済', Icon: PiStore },
-  { label: 'キャリア決済', Icon: PiMobile },
-  { label: 'PayPay', Icon: PiQr },
-  { label: 'd払い', Icon: PiQr },
-  { label: 'au PAY', Icon: PiQr },
-  { label: '楽天ペイ', Icon: PiQr },
-  { label: 'メルペイ', Icon: PiQr },
-  { label: '銀行振込', Icon: PiBank },
-]
+// 決済方法はクレジットカードのみ（OrderSummary / PurchaseModal がラベル解決に使用）
+export const METHODS = [{ id: 'card', label: 'クレジットカード' }]
 
 export default function PaymentMethods() {
   return (
-    <section className="payments">
-      <div className="payments-banner">ご利用可能な決済方法</div>
-      <div className="payments-grid">
-        {METHODS.map(({ label, Icon }) => (
-          <div className="payment-cell" key={label}>
-            <span className="payment-cell-icon" aria-hidden="true">
-              <Icon />
-            </span>
-            <span className="payment-cell-label">{label}</span>
-          </div>
+    <div className="paycard paycard--active" aria-label="お支払い方法：クレジットカード">
+      <div className="paycard__main">
+        <span className="paycard__icon" aria-hidden="true">
+          <PiCreditCard size={28} />
+        </span>
+        <div className="paycard__text">
+          <span className="paycard__title">クレジットカード</span>
+          <span className="paycard__sub">主要ブランドに対応・SSLで安全に決済</span>
+        </div>
+        <span className="paycard__check" aria-hidden="true">
+          <IconCheck />
+        </span>
+      </div>
+
+      <div className="paycard__brands" aria-label="対応カードブランド">
+        {CARD_BRANDS.map((Brand, i) => (
+          <Brand key={i} />
         ))}
       </div>
-    </section>
+    </div>
   )
 }
